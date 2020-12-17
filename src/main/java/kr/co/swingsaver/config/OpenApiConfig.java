@@ -29,7 +29,7 @@ public class OpenApiConfig {
 //	    return GroupedOpenApi.builder().group("Admin 처리 API").pathsToMatch(paths)
 //	        .build();
 //	}
-	
+	 
 	@Bean
 	public OpenAPI swingSaverOpenAPI() {
 	      return new OpenAPI()
