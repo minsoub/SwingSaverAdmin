@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>스윙세이버</title>
+
+    <!-- 부트스트랩 -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script  -->
+
+    <script src="/js/jquery-latest.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jsUtil.js"></script>
+    
+    <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
+    <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+</head>
+
+<body>
+
+    <div class="form-page joinus-page">
+        <form class="form-signin" id='forms1' name="forms1" method="POST">
+            <h1 class="text-center">관리자 로그인 화면 </h1>
+			
+            <div class="question">
+                <p>아이디</p>
+                <input type="text" id="email" name="email" placeholder=" " required />
+            </div>
+            <div class="question">
+                <p>비밀번호</p>
+                <input type="password" id="password" name="password" placeholder=" "  onkeyup="passwordChange(event)" required />
+            </div>
+
+
+            <button class="form-btn" type="button" id="login">로그인</button>
+            <div class="id-login">
+                <label class="auto-log"><input type="checkbox" name=""> 자동로그인</label>
+<!--
+                <ul class="search-login">
+                    <li><a href="#">아이디 찾기</a></li>
+                    <li><a href="#">비밀번호 찾기</a></li>
+                    <li><a href="#"><strong>회원가입하기</strong></a></li>
+                </ul>
+-->
+            </div>
+        </form>
+    </div>
+
+</body>
+<script>
+
+var message = "${returnCode}";
+if(message == "9999"){
+    alert("로그인에 실패하였습니다. \n Email 및 비밀번호를 확인해주세요");
+}
+console.log(message);
+$(document).ready(function(){
+    $("#login").click(function(){
+    	fn_login();
+    });
+});
+
+// 서버 전송이 완료되면 호출되는 메소드 - 공통
+function setSuccess()
+{
+	alert("성공적으로 로그인하였습니다!!!");
+	// 위치 이동
+}
+
+function fn_login(){
+	var email = $("#email").val();
+    var password=$("#password").val();
+
+    if(email == ""){
+        alert("이메일 주소를 입력하세요");
+        $("#email").focus();
+        return;
+    }
+    if(password == ""){
+        alert("비밀번호를 입력하세요");
+        $("#password").focus();
+        return;
+    }
+    var data = {
+    	email : $("#email").val();
+    	password : $("#password").val();
+    };
+    
+    AjaxSend("/api/v1/admin/login", "POST", data, "");
+     
+    //document.forms1.action = "/api/v1/admin/login";
+    //document.forms1.submit();
+}
+function passwordChange(event){
+	if ( event.keyCode == 13){
+		fn_login();
+	}
+}
+
+</script>
+</html>

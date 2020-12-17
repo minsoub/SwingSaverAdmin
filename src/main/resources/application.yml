@@ -1,0 +1,21 @@
+user:
+  data:
+    uploadpath: C://DevProject/uploadData
+
+springdoc:
+  version: '@project.version@'
+  api-docs:
+    groups:
+      enabled: true
+    path: /api-docs
+#  default-consumes-media-type: application/json
+#  default-produces-media-type: application/json
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+  packagesToScan: ko.co.swingsaver.controller
+  pathsToMatch: /api/v1/**
+
