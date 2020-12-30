@@ -1,3 +1,9 @@
+spring:
+  devtools:
+    livereload:
+       enabled: true
+    freemaker:
+       cache: false
 user:
   data:
     uploadpath: C://DevProject/uploadData
@@ -16,6 +22,6 @@ springdoc:
     path: /swagger-ui.html
     disable-swagger-default-url: true
     display-query-params-without-oauth2: true
-  packagesToScan: ko.co.swingsaver.controller
+  packagesToScan: ko.co.swingsaver.controller,ko.co.swingsaver.request
   pathsToMatch: /api/v1/**
 

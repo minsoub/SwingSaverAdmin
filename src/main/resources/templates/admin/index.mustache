@@ -92,11 +92,12 @@ function fn_login(){
         return;
     }
     var data = {
-    	email : $("#email").val();
-    	password : $("#password").val();
+    	'email' : $("#email").val(),
+    	'password' : $("#password").val()
     };
+    console.log(data);
     
-    AjaxSend("/api/v1/admin/login", "POST", data, "");
+    AjaxSend("/api/v1/admin/login", "POST", JSON.stringify(data), "");
      
     //document.forms1.action = "/api/v1/admin/login";
     //document.forms1.submit();
