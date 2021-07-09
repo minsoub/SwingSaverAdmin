@@ -77,7 +77,7 @@ public class AuthResponse {
 		return new ResponseEntity<>(this, HttpStatus.OK);
 	}
 	/**
-	 * 에러 메세지의 문자열을 출력한다. 
+	 * 
 	 * 
 	 * @param code
 	 * @param e

@@ -1,27 +1,77 @@
 spring:
+  application:
+    name: swingsaver-api
+  profiles:
+    active: local
+  jpa:
+    show-sql: true    
   devtools:
     livereload:
        enabled: true
     freemaker:
-       cache: false
+       cache: false   
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
+# jdbc:oracle:thin:@132.145.218.93:1521/swing.sub02121355050.trianglecnc.oraclevcn.com
+
+oracle:
+  jdbc:
+    Trace: true       
+---
+spring:
+  config:
+    activate:
+      on-profile: local           
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: ENC(DWjcUCYKHcuGmwHWqrjftjOEFhj2BJUeykC47rPExHAMOLQIpHVFILPnK88PCFmPl+1uL9BmegXzf9g8R2zWTt2eoDn9bYq4H2DOysvkisMoyZg5IlTsz7/C/vzZvO7f)    
+    username: ENC(quDlvStIFuphodH0xr56gQ==)
+    password: ENC(Tp/UZj0krz8190PLSIJEOIQhdJvssDjaa6u+LIXbdr8=)
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    show-sql: true
+     
+             
 user:
   data:
     uploadpath: C://DevProject/uploadData
 
+# JWT
+jwt:
+  prefix: swingsaver_
+  issuer: SWING.ADMINSTRATOR
+  secret: JGVjcjN0a2V5NEghc3ROMyp0RnJBbWV3MHJrJHByMU5nYm8wdFNpbmNlMm8yb21ha2VieSRXdDNjaG4xY2FnUjB1cA==
+  access-expired: 1209600 # 14(일) - 단위 (초)
+   
+      
+# open api
 springdoc:
-  version: '@project.version@'
   api-docs:
+    enabled: true
     groups:
       enabled: true
-    path: /api-docs
+  swagger-ui:
+    tags-sorter: alpha
+    display-request-duration: true
+    groups-order: desc
+          
+#springdoc:
+#  version: '@project.version@'
+#  api-docs:
+#    groups:
+#      enabled: true
+#    path: /api-docs
 #  default-consumes-media-type: application/json
 #  default-produces-media-type: application/json
-  swagger-ui:
-    operations-sorter: alpha
-    tags-sorter: alpha
-    path: /swagger-ui.html
-    disable-swagger-default-url: true
-    display-query-params-without-oauth2: true
-  packagesToScan: ko.co.swingsaver.controller,ko.co.swingsaver.request
-  pathsToMatch: /api/v1/**
+#  swagger-ui:
+#    operations-sorter: alpha
+#    tags-sorter: alpha
+#    path: /swagger-ui.html
+#    disable-swagger-default-url: true
+#    display-query-params-without-oauth2: true
+#  packagesToScan: ko.co.swingsaver.controller,ko.co.swingsaver.request
+#  pathsToMatch: /api/**
 
