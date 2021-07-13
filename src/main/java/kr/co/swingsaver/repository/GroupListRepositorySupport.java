@@ -23,7 +23,11 @@ public class GroupListRepositorySupport {
 
 	private final JPAQueryFactory queryFactory;
 	
-	
+	/**
+	 * 그룹 리스트 전체 조회
+	 * 
+	 * @return
+	 */
 	public List<GroupListDto> findAllGroupList() {
 		
 		return queryFactory
@@ -90,6 +94,7 @@ public class GroupListRepositorySupport {
 					)						
 				.from(groupEntity)
 				.where(groupEntity.del_yn.ne("Y"))
+				.orderBy(groupEntity.id.asc())
 				.fetch();
 	}
 	
@@ -102,7 +107,11 @@ public class GroupListRepositorySupport {
 //			.limit(1)
 //	    )
 	
-	
+	/**
+	 * 그룹의 관리자 리스트 조회 
+	 * 중복으로 관리자 아이디가 조회될 수 있다. 
+	 * @return
+	 */
 	public List<GroupListDto> findAllGroupAdminList() {
 		
 		return queryFactory

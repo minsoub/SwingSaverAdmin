@@ -2,15 +2,22 @@ package kr.co.swingsaver.service;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.swingsaver.dto.GroupListDto;
 import kr.co.swingsaver.entity.GroupEntity;
+import kr.co.swingsaver.entity.GroupMemberEntity;
+import kr.co.swingsaver.model.GroupMemberPK;
 import kr.co.swingsaver.repository.GroupListRepositorySupport;
+import kr.co.swingsaver.repository.GroupMemberRepository;
 import kr.co.swingsaver.repository.GroupRepository;
 import kr.co.swingsaver.request.GroupRequest;
 import kr.co.swingsaver.response.GroupResponse;
@@ -22,6 +29,9 @@ import lombok.val;
 public class GroupService {
     @Autowired
     private GroupRepository repository;
+    
+    @Autowired
+    private GroupMemberRepository memberRepository;
     
     @Autowired
     private GroupListRepositorySupport support;
@@ -63,7 +73,7 @@ public class GroupService {
 
         val group = repository.findById(request.getId()).orElseGet(GroupEntity::new);
         
-        group.setId(request.getId());
+        group.setId(isAlready ? request.getId() : String.valueOf(repository.getMaxGroupId()));
         group.setGroupname(request.getGroupname());
         group.setRegion(ObjectUtils.isEmpty(request.getRegion())? null: request.getRegion());
         group.setGrouptype(request.getGrouptype());
@@ -78,5 +88,27 @@ public class GroupService {
         group.setDel_yn(ObjectUtils.isEmpty(request.getDel_yn()) ? "N" : request.getDel_yn());
 
         return repository.save(group);
+    }
+    /**
+     * 그룹 멤버 회원(관리자)을 저장한다. 
+     * 그룹 등록/수정/삭제 시 수행된다. 
+     * 
+     * @param request
+     * @param entity
+     * @return
+     */
+    public GroupMemberEntity save(GroupRequest request, GroupEntity entity) {
+    	GroupMemberPK id = new GroupMemberPK();
+    	id.setGroupid(request.getId());
+    	id.setMemberid(request.getGroupadminid());
+    	
+    	val member = memberRepository.findById(id).orElseGet(GroupMemberEntity::new);
+    	
+    	member.setGroupid(entity.id);
+    	member.setMemberid(entity.groupadminid);
+    	member.setMembertype("A");
+    	member.setStatus("Y");
+
+    	return memberRepository.save(member);
     }
 }
