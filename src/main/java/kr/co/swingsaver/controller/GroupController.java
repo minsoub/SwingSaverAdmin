@@ -18,9 +18,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.swingsaver.entity.GroupEntity;
 import kr.co.swingsaver.request.GroupDelRequest;
 import kr.co.swingsaver.request.GroupRequest;
+import kr.co.swingsaver.response.AuthResponse;
 import kr.co.swingsaver.response.GroupResponse;
 import kr.co.swingsaver.service.GroupService;
 import kr.co.swingsaver.service.UserService;
+import kr.co.swingsaver.utils.ResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -76,14 +78,17 @@ public class GroupController {
     })
     @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete(@Parameter(description = "그룹정보", required = true, schema = @Schema(implementation = GroupDelRequest.class))
-                                  @RequestBody GroupDelRequest request) {
-//    	// 그룹 저장시 그룹 멤버도 같이 저장해야 한다. 
-//    	GroupEntity entity = groupService.save(request);
-//    	if (entity != null) {
-//    		groupService.save(request, entity);   // 그룹 멤버(관리자) 저장
-//    	}
-//        return ResponseEntity.ok(groupService.save(request));
-    	return ResponseEntity.ok(null);
+                                  @RequestBody GroupDelRequest[] request) {
+    	AuthResponse response = AuthResponse.newInstance();    	
+    	log.debug("delete called......");
+    	System.out.println("delete called....");
+    	
+    	boolean result = groupService.delete(request);
+    	if (result) {
+    		return response.build(ResponseCode.SUCCESS);
+    	}else {
+    		return response.build(ResponseCode.FAIL);
+    	}
     }    
     
     

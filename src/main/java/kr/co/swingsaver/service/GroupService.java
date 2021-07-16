@@ -2,16 +2,14 @@ package kr.co.swingsaver.service;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import kr.co.swingsaver.controller.GroupController;
 import kr.co.swingsaver.dto.GroupListDto;
 import kr.co.swingsaver.entity.GroupEntity;
 import kr.co.swingsaver.entity.GroupMemberEntity;
@@ -19,12 +17,15 @@ import kr.co.swingsaver.model.GroupMemberPK;
 import kr.co.swingsaver.repository.GroupListRepositorySupport;
 import kr.co.swingsaver.repository.GroupMemberRepository;
 import kr.co.swingsaver.repository.GroupRepository;
+import kr.co.swingsaver.request.GroupDelRequest;
 import kr.co.swingsaver.request.GroupRequest;
 import kr.co.swingsaver.response.GroupResponse;
 import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 
 
 
+@Slf4j
 @Service
 public class GroupService {
     @Autowired
@@ -110,5 +111,39 @@ public class GroupService {
     	member.setStatus("Y");
 
     	return memberRepository.save(member);
+    }
+    
+    @Transactional
+    public boolean delete(GroupDelRequest[] req) {
+
+    	for (GroupDelRequest request: req) {
+	        boolean isAlready = repository.existsById(request.getId());
+	        log.debug("isAlready => " + isAlready);
+	        System.out.println("isAlready => " + isAlready);
+	        if (!isAlready) {
+	        	return false;
+	        }else {
+	        	val group = repository.findById(request.getId()).orElseThrow();  //  .orElseGet(GroupEntity::new);
+	        	
+	            group.setId(request.getId());
+	            group.setGroupname(request.getGroupname());
+	            group.setRegion(ObjectUtils.isEmpty(request.getRegion())? null: request.getRegion());
+	            group.setGrouptype(request.getGrouptype());
+	            group.setAddress(ObjectUtils.isEmpty(request.getAddress())? null: request.getAddress());
+	            group.setPhone(ObjectUtils.isEmpty(request.getPhone())?null: request.getPhone());
+	            group.setQuota(request.getQuota());
+	            group.setStoragespace(request.getStoragespace());
+	            group.setStartdate(ObjectUtils.isEmpty(request.getStartdate()) ? null: request.getStartdate());
+	            group.setEnddate(ObjectUtils.isEmpty(request.getEnddate()) ? null: request.getEnddate());
+	            group.setGroupadminid(request.getGroupadminid());
+	            group.setRegisterdate(isAlready ? group.getRegisterdate() : null);
+	            group.setDel_yn("Y");
+	            log.debug(group.toString());
+	            System.out.println(group.toString());
+	
+	            repository.save(group);
+	        }	        
+    	}
+    	return true;
     }
 }
