@@ -60,7 +60,7 @@ public class GroupListDto {
     public Date enddate;
     
     @Schema(description = "그룹관리자아이디", example = "32")
-    public Long groupadminid;
+    public Integer groupadminid;
     
     @Schema(description = "그룹관리자명", example = "정민섭(minsoub@gmail.com)")
     public String groupadminname;

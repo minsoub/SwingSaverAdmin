@@ -24,7 +24,7 @@ public class GroupMemberEntity {
     @Schema(description = "Member ID.", example = "123")
     @Id  
     @Column(name = "memberid")    
-    public long memberid;
+    public Integer memberid;
     
     @Schema(description = "멤버 타입", example = "A")
     @Column(name = "membertype") 

@@ -36,7 +36,7 @@ public class UserEntity {
             generator="USER_SEQ_GEN"            //식별자 생성기를 설정해놓은  USER_SEQ_GEN으로 설정        
             )    
     @Column(name = "id")    
-    public long id;
+    public Integer id;
     
     @Schema(description = "메일주소", example = "minsoub@gmail.com")
     @Column(name = "email") 

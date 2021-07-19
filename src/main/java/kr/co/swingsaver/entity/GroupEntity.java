@@ -62,7 +62,7 @@ public class GroupEntity {
     
     @Schema(description = "그룹관리자아이디", example = "32")
     @Column(name = "groupadminid")  
-    public Long groupadminid;
+    public Integer groupadminid;
     
     @Schema(description = "등록일자", example = "2020-12-01")
     @Column(name = "registerdate")  

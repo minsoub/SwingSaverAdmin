@@ -47,7 +47,7 @@ public class GroupDto {
     public Date enddate;
     
     @Schema(description = "그룹관리자아이디", example = "32")
-    public Long groupadminid;
+    public Integer groupadminid;
     
     @Schema(description = "등록일자", example = "2020-12-01")
     public Date registerdate;
