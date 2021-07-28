@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration status="INFO">
+    <Properties>
+        <Property name="logNm">Spring Log4j2</Property>
+       	<Property name="layoutPattern">%style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{cyan} %highlight{[%-5p]}{FATAL=bg_red, ERROR=red,
+            INFO=green, DEBUG=blue}  [%C] %style{[%t]}{yellow}- %m%n</Property>  
+       	<Property name="filePattern">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>  
+                                
+        <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Properties>
+    
     <appenders>
-        <console name="CONSOLE" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{ISO8601} %highlight{[%-5level]}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue} %style{(%t)}{cyan} %style{%C{1.}}{yellow} %X{AWS-XRAY-TRACE-ID} - %msg%n%throwable"/>
-        </console>
+        <Console name="LogToConsole" class="ch.qos.logback.core.ConsoleAppender">            
+        	<PatternLayout pattern="${layoutPattern}"/>          
+        </Console>
+        <RollingFile name="LogToFile"
+                     fileName="logs/app.log"
+                     filePattern="logs/app.%d{yyyy-MM-dd}.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout pattern="${filePattern}"/>
+            <!-- JSONLayout compact="true" eventEol="true" /  -->
+            <TimeBasedTriggeringPolicy />
+        </RollingFile>
     </appenders>
     <loggers>
-        <logger name="kr.co.swingsaver"  level="DEBUG" additivity="true">
-            <appender-ref ref="CONSOLE" />
-        </logger>
+        <Logger name="kr.co.swingsaver" level="debug" additivity="true">
+            <AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Logger>
+        <Logger name="org.springframework.boot" level="error" additivity="true">
+        	<AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Logger>
+        <!--  Logger name="com.amazonaws.xray" level="debug" additivity="false">
+            <AppenderRef ref="LogToConsole"/>
+        </Logger  -->
+
         <root level="INFO">
-            <appender-ref ref="CONSOLE" />
+            <AppenderRef ref="LogToConsole" />
+            <AppenderRef ref="LogToFile" />
         </root>
-        <root level="DEBUG">
-            <appender-ref ref="CONSOLE" />
-        </root>        
     </loggers>
 </configuration>

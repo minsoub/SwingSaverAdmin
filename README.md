@@ -20,3 +20,16 @@ password: xxxxxxxxxx
 ----OUTPUT----------------------
 
 Tp/UZj0krz8190PLSIJEOIQhdJvssDjaa6u+LIXbdr8=
+
+# Docker Build
+docker build --build-arg JAR_FILE=build/libs/SwingSaverAdmin-0.0.1-SNAPSHOT.jar -t mjoung/swingbackendapi .
+
+# Docker Image 확인
+docker images
+
+# Docker Run 
+docker run -p 8080:8080 mjoung/swingbackendapi
+
+# Docker connect
+docker exec -it container_id bash
+

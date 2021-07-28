@@ -1,3 +1,7 @@
+# Log4j
+logging:
+  config: classpath:logback.xml
+  
 spring:
   application:
     name: swingsaver-api
