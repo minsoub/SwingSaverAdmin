@@ -3,7 +3,7 @@
     "kinesis.endpoint": "https://kinesis.ap-northeast-2.amazonaws.com", 
     "flows": [
         {
-            "filePattern": "/log/app.log*", 
+            "filePattern": "/logs/app.log*", 
             "kinesisStream": "log-stream"
         }
     ] 
